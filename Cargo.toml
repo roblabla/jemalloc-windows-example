@@ -1,0 +1,25 @@
+[package]
+name = "rust-jemalloc-pprof-example"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+jemalloc_pprof = "0.4"
+tokio = { version = "1", features = ["full"] }
+axum = "0.7.2"
+tikv-jemallocator = { version = "0.6", features = ["profiling", "unprefixed_malloc_on_supported_platforms"] }
+
+[workspace]
+
+[patch.crates-io]
+# Use tikv-jemalloc-ctl 0.6 https://github.com/polarsignals/rust-jemalloc-pprof/pull/11
+# Avoid unix-specific functions https://github.com/polarsignals/rust-jemalloc-pprof/pull/12
+# Use findshlibs for mappings support on win32 and macos.
+# Update prost to 0.13
+jemalloc_pprof = { git = "https://github.com/JustRustThings/rust-jemalloc-pprof", branch = "stuff-0.4.2" }
+
+# Fix windows targets
+# Add support for win7 targets
+# Disable user configuration (/etc/malloc.conf and MALLOC_CONF)
+tikv-jemalloc-sys = { git = "https://github.com/JustRustThings/jemallocator", branch = "stuff-0.6.0" }
